@@ -9,10 +9,13 @@ public class TaskPatrol : Node
     private Transform m_Transform;
     private Transform[] m_waypoints;
 
+    private Animator m_Anim;
+
     public TaskPatrol(Transform transform, Transform[] waypoints)
     {
         m_Transform = transform;
         m_waypoints = waypoints;
+        m_Anim = transform.GetComponent<Animator>();
     }
 
     private int currentWaypointIndex = 0;
@@ -30,6 +33,7 @@ public class TaskPatrol : Node
             if (waitCounter >= waitTime) 
             { 
                 Waiting = false;
+                m_Anim.SetBool("Walking", true);
             }
         }
         else
@@ -40,6 +44,7 @@ public class TaskPatrol : Node
                 m_Transform.position = point.position;
                 waitCounter = 0f;
                 Waiting = true;
+                m_Anim.SetBool("Walking", false);
 
                 currentWaypointIndex = (currentWaypointIndex + 1) % m_waypoints.Length;
             }
